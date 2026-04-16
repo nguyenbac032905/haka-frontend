@@ -1,0 +1,206 @@
+:root {
+    --primary-color: #28a745;
+    --secondary-color: #ffc107;
+    --text-color: #333;
+    --white: #ffffff;
+    --border-color: #eaeaea;
+    --transition: all 0.25s ease;
+}
+
+.header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: var(--white);
+    border-bottom: 1px solid var(--border-color);
+
+    &__container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 12px 16px;
+
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+    }
+
+    /* LOGO */
+    &__logo {
+        display: flex;
+        align-items: center;
+
+        img {
+            height: 40px;
+            object-fit: contain;
+            cursor: pointer;
+        }
+    }
+
+    /* SEARCH */
+    &__search {
+        flex: 1;
+        max-width: 520px;
+
+        .ant-input-group {
+            display: flex;
+            height: 44px;
+        }
+
+        /* INPUT */
+        .ant-input-affix-wrapper {
+            height: 44px;
+            border-radius: 999px 0 0 999px;
+            border: 1.5px solid var(--primary-color);
+            padding: 0 16px;
+
+            display: flex;
+            align-items: center;
+
+            &:hover,
+            &.ant-input-affix-wrapper-focused {
+                border-color: var(--primary-color);
+                box-shadow: 0 0 0 2px rgba(40, 167, 69, 0.1);
+            }
+        }
+
+        .ant-input {
+            border: none !important;
+            box-shadow: none !important;
+        }
+
+        /* BUTTON */
+        .ant-input-search-btn {
+            height: 44px;
+            width: 50px;
+
+            border-radius: 0 999px 999px 0 !important;
+
+            background: #fff;
+            border: 1.5px solid var(--primary-color);
+            border-left: 1px solid rgba(0, 0, 0, 0.1); // 🔥 vạch chia
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            transition: all 0.2s ease;
+
+            .anticon {
+                font-size: 18px;
+                color: var(--primary-color);
+            }
+
+            &:hover {
+                background: rgba(40, 167, 69, 0.08);
+            }
+        }
+
+        .ant-input-clear-icon {
+            font-size: 16px;
+        }
+    }
+    /* RIGHT MENU */
+    &__menu {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+    }
+
+    &__item {
+        font-size: 18px;
+        font-weight: 500;
+        cursor: pointer;
+        position: relative;
+        margin-right: 30px;
+
+        &:hover {
+            color: var(--primary-color);
+        }
+
+        /* underline animation */
+        &::after {
+            content: "";
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0%;
+            height: 2px;
+            background: var(--primary-color);
+            transition: var(--transition);
+        }
+
+        &:hover::after {
+            width: 100%;
+        }
+    }
+
+    /* CART */
+    &__cart {
+        font-size: 25px;
+        cursor: pointer;
+        color: var(--text-color);
+        transition: var(--transition);
+
+        &:hover {
+            color: var(--primary-color);
+            transform: scale(1.1);
+        }
+    }
+
+    /* AUTH (login/register) */
+    &__auth {
+        display: flex;
+        gap: 10px;
+    }
+
+    &__login,
+    &__register {
+        font-size: 13px;
+        font-weight: 600;
+        padding: 6px 12px;
+        border-radius: 6px;
+        width: 65px;
+        text-align: center;
+        cursor: pointer;
+        transition: var(--transition);
+    }
+
+    &__login {
+        border: 1px solid var(--primary-color);
+        color: var(--primary-color);
+
+        &:hover {
+            background: rgba(40, 167, 69, 0.1);
+        }
+    }
+
+    &__register {
+        background: var(--primary-color);
+        color: white;
+
+        &:hover {
+            opacity: 0.9;
+        }
+    }
+
+    /* USER (logged in) */
+    &__user {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        cursor: pointer;
+        padding: 4px 8px;
+        border-radius: 20px;
+        transition: var(--transition);
+
+        &:hover {
+            background: #f5f5f5;
+        }
+
+        span {
+            font-weight: 500;
+            font-size: 14px;
+        }
+    }
+}
