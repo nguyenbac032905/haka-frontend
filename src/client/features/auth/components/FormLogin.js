@@ -1,132 +1,110 @@
 import { Button, Form, Input } from "antd";
-import { useAuth } from "../hooks/useAuth";
 import { useRedirect } from "../../../../shared/hooks/useRedirect";
 import { useNotification } from "../../../../shared/hooks/useNotification";
 import "./formLogin.scss";
+import { login } from "../authSlice";
+import { useDispatch,useSelector } from "react-redux";
+import { setCookie } from "../../../../shared/helpers/cookie";
+import { Link } from "react-router-dom";
+import { getCartByUserId ,createCart} from "../../cart/api/cartService";
+import { useEffect } from "react";
 
 function FormLogin() {
     const { redirect } = useRedirect();
     const { success, error } = useNotification();
-    const { login, loading } = useAuth();
+    const {loading,user, error: errorLogin} = useSelector(state => state.auth);
+    const dispatch = useDispatch();
 
     const onFinish = async (values) => {
-        const result = await login(values);
-
-        if (result?.success) {
-            success("Đăng nhập thành công");
-            redirect("/");
-        } else {
-            error("Đăng nhập thất bại", "Email hoặc mật khẩu không đúng");
+        try {
+            const res = await dispatch(login(values)).unwrap();
+            if(res && res.length > 0) {
+                success("Đăng nhập thành công");
+                setCookie("tokenUser", res[0].tokenUser);
+                setCookie("emailUser", res[0].email);
+                setCookie("userId", res[0].id);
+                redirect("/");
+            }else{
+                error("Sai email hoặc mật khẩu");
+            }
+        } catch (err) {
+            error(err)
         }
     };
-
+    useEffect(() => {
+        const fetchApi = async () => {
+            if(user && user.length > 0) {
+                const cart = await getCartByUserId(user[0].id);
+                if(cart && cart.length > 0){
+                    setCookie("cartId",cart[0].id);
+                }else{
+                    const result = await createCart({user_id: user[0].id});
+                    if( result && result.length > 0){
+                        setCookie("cartId",result[0].id);
+                    }
+                }
+            }
+        }
+        fetchApi();
+    },[user]);
     return (
-       <>
-            <div class="login">
-                <div class="login_box">
-                    <div class="login_box-left">
+        <div className="login">
+            <div className="login__wrapper">
 
-                        <div class="login_box-content">
+                <div className="login__card">
+                    <h2 className="login__title">Đăng nhập</h2>
+                    <p className="login__subtitle">
+                        Chào mừng bạn quay trở lại!
+                    </p>
 
-                            <div class="login_box-logos">
-                                <img src="https://cdn-static.smember.com.vn/_next/static/media/cellphones-long-icon.6a80e2a6.svg" alt="" />
-                                <img src="https://cdn-static.smember.com.vn/_next/static/media/dtv-long-icon.40a11e1d.svg" alt="" />
-                            </div>
+                    <Form
+                        layout="vertical"
+                        onFinish={onFinish}
+                        className="login__form"
+                    >
+                        <Form.Item
+                            label="Email"
+                            name="email"
+                            rules={[
+                                { required: true, message: "Vui lòng nhập email" },
+                                { type: "email", message: "Email không hợp lệ" }
+                            ]}
+                        >
+                            <Input size="large" placeholder="Nhập email..." />
+                        </Form.Item>
 
-                            <div class="login_box-text">
-                                Nhập hội khách hàng thành viên <strong style={{color:"#d70018"}}>HMEMBER</strong>
-                            </div>
+                        <Form.Item
+                            label="Mật khẩu"
+                            name="password"
+                            rules={[
+                                { required: true, message: "Vui lòng nhập mật khẩu" }
+                            ]}
+                        >
+                            <Input.Password size="large" placeholder="Nhập mật khẩu..." />
+                        </Form.Item>
 
-                            <div class="login_box-text">
-                                Để không bỏ lỡ các ưu đãi hấp dẫn từ HAKA
-                            </div>
-
+                        <div className="login__options">
+                            <Link to="/password/forgot">Quên mật khẩu?</Link>
                         </div>
 
-                        <div class="login_box-card">
+                        <Button
+                            htmlType="submit"
+                            size="large"
+                            block
+                            className="login__btn"
+                        >
+                            Đăng nhập
+                        </Button>
+                    </Form>
 
-                            <div class="cornor bottom-left"></div>
-                            <div class="cornor bottom-right"></div>
-                            <div class="cornor top-left"></div>
-                            <div class="cornor top-right"></div>
-
-                            <div class="login_box-list">
-                                <ul>
-                                    <li>
-                                        <i class="fa-solid fa-gift"></i>
-                                        <div><strong>Chiết khấu đến 5%</strong> khi mua các sản phẩm mua tại HAKA</div>
-                                    </li>
-
-                                    <li>
-                                        <i class="fa-solid fa-gift"></i>
-                                        <div><strong>Miễn phí giao hàng</strong> cho thành viên SMEM, SVIP và cho đơn hàng từ 300.000đ</div>
-                                    </li>
-
-                                    <li>
-                                        <i class="fa-solid fa-gift"></i>
-                                        <div><strong>Tặng voucher sinh nhật đến 500.000đ</strong> cho khách hàng thành viên</div>
-                                    </li>
-
-                                    <li>
-                                        <i class="fa-solid fa-gift"></i>
-                                        <div>Trợ giá thu cũ lên đời <strong>đến 1 triệu</strong></div>
-                                    </li>
-
-                                    <li>
-                                        <i class="fa-solid fa-gift"></i>
-                                        <div>Thăng hạng nhận voucher <strong>đến 300.000đ</strong></div>
-                                    </li>
-
-                                    <li>
-                                        <i class="fa-solid fa-gift"></i>
-                                        <div>Đặc quyền S-Student/S-Teacher <strong>ưu đãi thêm đến 10%</strong></div>
-                                    </li>
-                                </ul>
-
-                                <a href="/">Xem chi tiết chính sách ưu đãi Hmember</a>
-                            </div>
-
-                        </div>
-
+                    <div className="login__register">
+                        <span>Bạn chưa có tài khoản?</span>
+                        <Link to="/register">Đăng ký</Link>
                     </div>
-                    <div class="login_box-right">
-
-                        <div class="box-head">
-                            <h2>Đăng nhập HMEMBER</h2>
-                        </div>
-
-                        <form action="/user/login" method="POST">
-
-                            <div class="form-group login_box-item">
-                                <div class="type">Email:</div>
-                                <input type="email" name="email" required placeholder="Nhập Email của bạn..." />
-                            </div>
-
-                            <div class="form-group login_box-item">
-                                <div class="type">Mật khẩu:</div>
-                                <input type="password" name="password" required placeholder="Nhập mật khẩu của bạn..." />
-                            </div>
-
-                            <div class="form-group login_box-button">
-                                <button type="submit" class="btn btn-red">Đăng nhập</button>
-                            </div>
-
-                        </form>
-
-                        <div class="login_box-forgot">
-                            <a href="/user/password/forgot">Quên mật khẩu?</a>
-                        </div>
-
-                        <div class="login_box-register">
-                            <span>Bạn chưa có tài khoản ?</span>
-                            <a href="/user/register">Đăng ký ngay</a>
-                        </div>
-                    </div>
-
                 </div>
 
             </div>
-       </>
+        </div>
     );
 }
 

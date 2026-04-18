@@ -1,0 +1,133 @@
+.category__trigger {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    padding: 8px 14px;
+    border: 1px solid #d9d9d9;
+    border-radius: 6px;
+
+    background: #fff;
+    cursor: pointer;
+
+    font-weight: 500;
+    color: #333;
+
+    transition: all 0.2s ease;
+
+    /* để tránh bị select text */
+    user-select: none;
+
+    &:hover {
+        border-color: #1677ff;
+        color: #1677ff;
+        box-shadow: 0 2px 8px rgba(22, 119, 255, 0.15);
+    }
+}
+
+.category__trigger-icon {
+    font-size: 16px;
+    color: inherit; // ăn theo hover
+}
+
+/* MEGA MENU */
+.mega-menu {
+    display: flex;
+    width: 700px;
+    min-height: 360px;
+    background: #fff;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.18);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* LEFT */
+.mega-menu__left {
+    width: 42%;
+    border-right: 1px solid #eee;
+    background: #fafafa;
+    padding: 10px;
+}
+
+.mega-menu__item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.2s;
+
+    &:hover,
+    &.active {
+        background: #e6f4ff;
+        color: #1677ff;
+    }
+}
+
+/* thumbnail */
+.mega-menu__thumb {
+    width: 22px;
+    height: 22px;
+    object-fit: contain;
+    margin-right: 8px;
+}
+
+/* text */
+.mega-menu__title {
+    flex: 1;
+    display: flex;
+    align-items: center;
+}
+
+/* arrow icon */
+.mega-menu__icon {
+    font-size: 12px;
+    color: #999;
+}
+
+/* RIGHT */
+.mega-menu__right {
+    width: 58%;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.mega-menu__child {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    padding: 8px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+
+    transition: 0.2s ease;
+
+    &:hover {
+        background: #f5f5f5;
+        color: #1677ff;
+    }
+}
+
+/* thumbnail cấp 2 */
+.mega-menu__child-thumb {
+    width: 30x;
+    height: 30px;
+    object-fit: contain;
+
+    border-radius: 4px;
+    background: #fff;
+}
+
+/* text */
+.mega-menu__child-title {
+    flex: 1;
+    font-size: 14px;
+}
+.mega-menu__empty {
+    color: #999;
+}

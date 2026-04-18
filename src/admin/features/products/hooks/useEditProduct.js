@@ -3,6 +3,7 @@ import { message } from "antd";
 import { uploadImage } from "../../../../shared/helpers/uploadCloudinary";
 import { editProduct } from "../api/productService";
 import { useRedirect } from "../../../../shared/hooks/useRedirect";
+import { createSlug } from "../../../../shared/helpers/createSlug";
 
 export function useEditProduct() {
     const [loading, setLoading] = useState(false);
@@ -21,11 +22,11 @@ export function useEditProduct() {
             
             if (realFile instanceof File) {
                 thumbnailUrl = await uploadImage(realFile);
-                console.log(thumbnailUrl);
             }
 
             const payload = {
                 ...values,
+                slug: createSlug(values.title),
                 thumbnail: thumbnailUrl
             };
             

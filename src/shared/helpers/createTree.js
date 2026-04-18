@@ -82,3 +82,31 @@ export const getAllParents = (data, childId) => {
 
     return find(data, childId) || [];
 };
+export const getAllSubCategory = (data, parentId) => {
+    const result = [];
+
+    const find = (nodes, targetId) => {
+        for (const node of nodes) {
+            if (node.id === targetId) {
+                collect(node);
+                return;
+            }
+
+            if (node.children && node.children.length > 0) {
+                find(node.children, targetId);
+            }
+        }
+    };
+
+    const collect = (node) => {
+        result.push(node.id);
+
+        if (node.children && node.children.length > 0) {
+            node.children.forEach(child => collect(child));
+        }
+    };
+
+    find(data, parentId);
+
+    return result;
+};
