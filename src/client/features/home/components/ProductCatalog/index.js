@@ -14,7 +14,7 @@ function ProductCatalog() {
   const [currentPage, setCurrentPage] = useState(1);
   const [sortOrder, setSortOrder] = useState(null);
 
-  const pageSize = 4;
+  const pageSize = 8;
 
   const filteredProducts = useMemo(() => {
     const activeCategoryIds = new Set(

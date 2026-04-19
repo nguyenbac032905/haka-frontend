@@ -10,13 +10,13 @@ export function useProductBySlug(slug) {
 
     useEffect(() => {
         if (!slug) return;
+        console.log(slug)
 
         const fetchProduct = async () => {
             setLoading(true);
 
             try {
                 const result = await getProduct(slug);
-
                 if (!result || result.deleted) {
                     message.error("Không tìm thấy sản phẩm");
                     redirect("/");
@@ -26,6 +26,7 @@ export function useProductBySlug(slug) {
                 setProduct(result[0]);
             } catch (err) {
                 message.error("Có lỗi xảy ra");
+                console.log(err)
             } finally {
                 setLoading(false);
             }

@@ -38,7 +38,6 @@ function ProductDetail() {
             message.error("Không đủ số lượng sản phẩm trong kho!");
             return;
         }
-
         await dispatch(addToCart({ cartId, product, quantity })).unwrap();
         message.success("Thêm vào giỏ hàng thành công!");
         redirect.redirect("/cart");

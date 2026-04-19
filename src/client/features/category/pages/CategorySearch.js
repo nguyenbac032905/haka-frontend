@@ -22,7 +22,7 @@ function CategorySearch() {
     console.log(allSubsCategory)
     // lọc sản phẩm theo category + subcategory
     const result = products.filter(item => {
-        return allSubsCategory.includes(String(item.product_category_id));
+        return allSubsCategory.includes(item.product_category_id);
     }); 
 
     return (

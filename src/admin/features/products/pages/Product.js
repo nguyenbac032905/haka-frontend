@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 function Product() {
     const [searchText, setSearchText] = useState("");
     const [statusFilter, setStatusFilter] = useState(null);
-    const [pageSize, setPageSize] = useState(3);
+    const [pageSize, setPageSize] = useState(5);
     const {products,loading,refetch} = useProducts();
     const { handleUpdateField, loadingId : loadingStatus} = useUpdateProductField();
     

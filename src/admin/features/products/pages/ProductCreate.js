@@ -11,7 +11,7 @@ function ProductCreate() {
     const {categories} = useCategories();
     const categoriesTree = buildCategoryTree(categories);
     const categoriesSelect = buildCategorySelectOptions(categoriesTree);
-    
+    console.log(categoriesSelect)
     const {loading,handleCreate} = useCreateProduct();
     return (
         <Card title="Tạo sản phẩm mới">

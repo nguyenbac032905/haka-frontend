@@ -9,6 +9,7 @@ import { useCreateOrderItem } from "../hooks/useCreateOrderItem";
 import {useRedirect} from "../../../../shared/hooks/useRedirect";
 import { useDispatch } from "react-redux";
 import { clearCart } from "../cartSlice";
+import {useUpdateProductField} from "../../product/hooks/useUpdateProductField";
 const { Title } = Typography;
 
 function Checkout(){
@@ -20,20 +21,21 @@ function Checkout(){
     });
     const {handleCreateOrder} = useCreateOrder();
     const {handleCreateOrderItems} = useCreateOrderItem();
+    const {handleUpdateField} = useUpdateProductField();
     const redirect = useRedirect();
     const dispatch = useDispatch();
 
     const cartId = getCookie("cartId");
     const userId = getCookie("userId");
     const {items,loading} = useCartItem(cartId);
+    console.log(items)
     const { products } = useProducts();
-
-    const cartDetail = items?.map(item => {
-        const product = products?.find(p => String(p.id) == String(item.product_id));
+    const cartDetail = (items && products?.length > 0) 
+  ? items.map(item => {
+        const product = products.find(p => p.id == item.product_id);
 
         const price = product?.price || 0;
         const discount = product?.discountPercentage || 0;
-
         const finalPrice = price * (1 - discount / 100);
 
         return {
@@ -44,7 +46,8 @@ function Checkout(){
             finalPrice,
             total: finalPrice * item.quantity
         };
-    });
+    })
+  : [];
     const totalPrice = cartDetail?.reduce((sum, item) => sum + item.total, 0);
 
     const handleChange = (key, value) => {
@@ -78,7 +81,17 @@ function Checkout(){
         const success = await handleCreateOrderItems(dataItems, newOrder.id);
         if (!success) return;
         dispatch(clearCart(cartId))
+        // ✅ 4. cập nhật sold + stock
+        for (const item of cartDetail) {
+            const product = item.product;
+            if (!product) continue;
 
+            const newSold = (product.sold || 0) + item.quantity;
+            const newStock = (product.stock || 0) - item.quantity;
+
+            await handleUpdateField(product.id, "sold", newSold);
+            await handleUpdateField(product.id, "stock", newStock);
+        }
         if(orderData.paymentMethod == "bank"){
             redirect.redirect(`/create_payment_url/${newOrder.id}`);
             return;
@@ -99,7 +112,7 @@ function Checkout(){
 
                                 {cartDetail?.map(item => (
                                     <div key={item.id} className="checkout__item">
-                                        <img src={item.product.thumbnail} />
+                                        <img src={item.product?.thumbnail} />
 
                                         <div className="checkout__item-info">
                                             <div className="title">{item.product.title}</div>

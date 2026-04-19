@@ -20,7 +20,7 @@ function FormLogin() {
             const res = await dispatch(login(values)).unwrap();
             if(res && res.length > 0) {
                 success("Đăng nhập thành công");
-                setCookie("tokenUser", res[0].tokenUser);
+                setCookie("tokenUser", res[0].token);
                 setCookie("emailUser", res[0].email);
                 setCookie("userId", res[0].id);
                 redirect("/");

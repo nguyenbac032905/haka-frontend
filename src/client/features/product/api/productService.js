@@ -4,6 +4,10 @@ export const getListProduct = async () => {
     return result;
 }
 export const getProduct = async (slug) => {
-    const result = await request.get(`products/?slug=${slug}`);
+    const result = await request.get(`products?slug=${slug}`);
     return result;
+}
+export const editProduct = async (idProduct,option) => {
+    const result = await request.patch(`products/${idProduct}`, option);
+    return result
 }

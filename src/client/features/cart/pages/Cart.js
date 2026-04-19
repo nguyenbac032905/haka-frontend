@@ -42,12 +42,22 @@ function Cart() {
 
     // xử lý update quantity (fake)
     const handleChangeQty = (value, item) => {
-        const itemId=item.id;
-        const quantity = value;
-        dispatch(updateQuantity({itemId, quantity}));
-        message.success("Cập nhật số lượng thành công");
-    };
+        const product = item.product;
+        if (!product || !value || value < 1) return;
 
+        const maxStock = product.stock || 0;
+
+        if (value > maxStock) {
+            message.warning(`Chỉ còn ${maxStock} sản phẩm`);
+        }
+
+        const quantity = Math.min(value, maxStock);
+
+        dispatch(updateQuantity({
+            itemId: item.id,
+            quantity
+        }));
+    };
     // xử lý xoá (fake)
     const handleDelete = (item) => {
         dispatch(removeItem(item.id))

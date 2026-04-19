@@ -20,13 +20,12 @@ function ProductEdit() {
     const categoriesSelect = buildCategorySelectOptions(categoriesTree);
     //lay du lieu product
     const {product,loading: loadingProduct} = useProductById(id);
-
     //do du lieu ra form
     useEffect(() => {
         if(product){
             form.setFieldsValue({
                 ...product,
-                product_category_id: String(product.product_category_id),
+                product_category_id: product.product_category_id,
                 thumbnail: product.thumbnail?[{url: product.thumbnail}]:[]
             });
         }

@@ -9,7 +9,7 @@ export const getOrder = async (idOrder) => {
     return result
 }
 export const getListOrderByUser = async (userId) => {
-    const result = await request.get(`orders/?user_id=${userId}`);
+    const result = await request.get(`orders?user_id=${userId}`);
     return result
 }
 export const editOrder = async (idOrder,option) => {

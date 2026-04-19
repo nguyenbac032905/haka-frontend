@@ -4,6 +4,7 @@ export const getCartItemByCartId = async (cartId) => {
     return result;
 }
 export const addCartItem = async (option) => {
+    console.log(option)
     const result = await request.post(`cart_items`,option);
     return result;
 }

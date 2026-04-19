@@ -29,10 +29,12 @@ export function useEditProduct() {
                 slug: createSlug(values.title),
                 thumbnail: thumbnailUrl
             };
+
             
             delete payload.sold;
             console.log(payload)
             const result = await editProduct(idProduct,payload);
+            console.log(result)
 
             if (result?.id || result?.success) {
                 message.success("Sửa thành công");
